@@ -2,7 +2,8 @@ CONFIG_NAME: '3stages'
 
 DATASET_NAME: 'birds'
 EMBEDDING_TYPE: 'cnn-rnn'
-DATA_DIR: '../data/birds'
+#DATA_DIR: '../data/birds'
+DATA_DIR: '/home/nakachi/birds'
 GPU_ID: '3'
 WORKERS: 1  # 4
 
@@ -16,7 +17,8 @@ TEST:
 
 TRAIN:
     FLAG: False
-    NET_G: '../models/birds_3stages/netG_210000.pth'
+    #NET_G: '../models/birds_3stages/netG_210000.pth'
+    NET_G: '../output/birds_3stages_2020_11_27_01_25_23/Model/netG_99000.pth'
     BATCH_SIZE: 24
 
 

@@ -119,6 +119,7 @@ if __name__ == "__main__":
                               custom_classes=CLASS_DIC[cfg.DATASET_NAME],
                               base_size=cfg.TREE.BASE_SIZE,
                               transform=image_transform)
+    # birdsはここ
     elif cfg.GAN.B_CONDITION:  # text to image task
         from datasets import TextDataset
         dataset = TextDataset(cfg.DATA_DIR, split_dir,
