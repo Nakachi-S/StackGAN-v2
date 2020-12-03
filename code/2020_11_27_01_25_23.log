@@ -1,0 +1,2114 @@
+Using config:
+{'CONFIG_NAME': '3stages',
+ 'CUDA': True,
+ 'DATASET_NAME': 'birds',
+ 'DATA_DIR': '/home/nakachi/birds',
+ 'EMBEDDING_TYPE': 'cnn-rnn',
+ 'GAN': {'B_CONDITION': True,
+         'DF_DIM': 64,
+         'EMBEDDING_DIM': 128,
+         'GF_DIM': 64,
+         'NETWORK_TYPE': 'default',
+         'R_NUM': 2,
+         'Z_DIM': 100},
+ 'GPU_ID': '0,1,2,3',
+ 'TEST': {'B_EXAMPLE': True, 'SAMPLE_NUM': 30000},
+ 'TEXT': {'DIMENSION': 1024},
+ 'TRAIN': {'BATCH_SIZE': 9,
+           'COEFF': {'COLOR_LOSS': 0.0, 'KL': 2.0, 'UNCOND_LOSS': 1.0},
+           'DISCRIMINATOR_LR': 0.0002,
+           'FLAG': True,
+           'GENERATOR_LR': 0.0002,
+           'MAX_EPOCH': 600,
+           'NET_D': '',
+           'NET_G': '',
+           'SNAPSHOT_INTERVAL': 1000,
+           'VIS_COUNT': 64},
+ 'TREE': {'BASE_SIZE': 64, 'BRANCH_NUM': 3},
+ 'WORKERS': 4}
+Total filenames:  11788 001.Black_footed_Albatross/Black_Footed_Albatross_0046_18.jpg
+Load filenames from: /home/nakachi/birds/train/filenames.pickle (8855)
+embeddings:  (8855, 10, 1024)
+DataParallel(
+  (module): G_NET(
+    (ca_net): CA_NET(
+      (fc): Linear(in_features=1024, out_features=512, bias=True)
+      (relu): GLU()
+    )
+    (h_net1): INIT_STAGE_G(
+      (fc): Sequential(
+        (0): Linear(in_features=228, out_features=32768, bias=False)
+        (1): BatchNorm1d(32768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): GLU()
+      )
+      (upsample1): Sequential(
+        (0): Interpolate()
+        (1): Conv2d(1024, 1024, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (2): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (3): GLU()
+      )
+      (upsample2): Sequential(
+        (0): Interpolate()
+        (1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (3): GLU()
+      )
+      (upsample3): Sequential(
+        (0): Interpolate()
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (3): GLU()
+      )
+      (upsample4): Sequential(
+        (0): Interpolate()
+        (1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (3): GLU()
+      )
+    )
+    (img_net1): GET_IMAGE_G(
+      (img): Sequential(
+        (0): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (1): Tanh()
+      )
+    )
+    (h_net2): NEXT_STAGE_G(
+      (jointConv): Sequential(
+        (0): Conv2d(192, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): GLU()
+      )
+      (residual): Sequential(
+        (0): ResBlock(
+          (block): Sequential(
+            (0): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): GLU()
+            (3): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (4): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (1): ResBlock(
+          (block): Sequential(
+            (0): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): GLU()
+            (3): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (4): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+      )
+      (upsample): Sequential(
+        (0): Interpolate()
+        (1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (3): GLU()
+      )
+    )
+    (img_net2): GET_IMAGE_G(
+      (img): Sequential(
+        (0): Conv2d(32, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (1): Tanh()
+      )
+    )
+    (h_net3): NEXT_STAGE_G(
+      (jointConv): Sequential(
+        (0): Conv2d(160, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): GLU()
+      )
+      (residual): Sequential(
+        (0): ResBlock(
+          (block): Sequential(
+            (0): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): GLU()
+            (3): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (4): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (1): ResBlock(
+          (block): Sequential(
+            (0): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): GLU()
+            (3): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (4): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+      )
+      (upsample): Sequential(
+        (0): Interpolate()
+        (1): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (3): GLU()
+      )
+    )
+    (img_net3): GET_IMAGE_G(
+      (img): Sequential(
+        (0): Conv2d(16, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (1): Tanh()
+      )
+    )
+  )
+)
+# of netsD 3
+Load pretrained model from  https://download.pytorch.org/models/inception_v3_google-1a9a5a14.pth
+/home/nakachi/StackGAN-v2/code/miscc/config.py:100: YAMLLoadWarning: calling yaml.load() without Loader=... is deprecated, as the default Loader is unsafe. Please read https://msg.pyyaml.org/load for full details.
+  yaml_cfg = edict(yaml.load(f))
+/home/nakachi/miniconda3/envs/env/lib/python3.6/site-packages/torchvision/models/inception.py:77: FutureWarning: The default weight initialization of inception_v3 will be changed in future releases of torchvision. If you wish to keep the old behavior (which leads to long initialization times due to scipy/scipy#11299), please set init_weights=True.
+  ' due to scipy/scipy#11299), please set init_weights=True.', FutureWarning)
+[0/600][245]
+                         Loss_D: 10.19 Loss_G: 12.86 Loss_KL: 0.05 Time: 399.79s
+                      
+/home/nakachi/StackGAN-v2/code/trainer.py:692: UserWarning: This overload of add_ is deprecated:
+	add_(Number alpha, Tensor other)
+Consider using one of the following signatures instead:
+	add_(Tensor other, *, Number alpha) (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629427286/work/torch/csrc/utils/python_arg_parser.cpp:766.)
+  avg_p.mul_(0.999).add_(0.001, p.data)
+[1/600][245]
+                         Loss_D: 12.05 Loss_G: 13.87 Loss_KL: 0.13 Time: 386.69s
+                      
+[2/600][245]
+                         Loss_D: 14.30 Loss_G: 9.07 Loss_KL: 0.29 Time: 386.37s
+                      
+[3/600][245]
+                         Loss_D: 10.67 Loss_G: 14.09 Loss_KL: 0.34 Time: 387.04s
+                      
+Save G/Ds models.
+[4/600][245]
+                         Loss_D: 8.31 Loss_G: 18.28 Loss_KL: 0.26 Time: 394.91s
+                      
+[5/600][245]
+                         Loss_D: 7.99 Loss_G: 12.26 Loss_KL: 0.55 Time: 387.01s
+                      
+[6/600][245]
+                         Loss_D: 9.91 Loss_G: 9.18 Loss_KL: 0.70 Time: 387.76s
+                      
+[7/600][245]
+                         Loss_D: 9.26 Loss_G: 16.95 Loss_KL: 0.87 Time: 387.35s
+                      
+Save G/Ds models.
+[8/600][245]
+                         Loss_D: 6.50 Loss_G: 19.99 Loss_KL: 0.57 Time: 396.18s
+                      
+[9/600][245]
+                         Loss_D: 4.87 Loss_G: 19.01 Loss_KL: 1.08 Time: 387.76s
+                      
+[10/600][245]
+                         Loss_D: 8.08 Loss_G: 18.92 Loss_KL: 1.30 Time: 387.98s
+                      
+[11/600][245]
+                         Loss_D: 8.03 Loss_G: 19.33 Loss_KL: 1.25 Time: 387.20s
+                      
+Save G/Ds models.
+[12/600][245]
+                         Loss_D: 4.63 Loss_G: 27.18 Loss_KL: 0.81 Time: 394.76s
+                      
+[13/600][245]
+                         Loss_D: 4.10 Loss_G: 25.12 Loss_KL: 1.19 Time: 386.89s
+                      
+[14/600][245]
+                         Loss_D: 7.44 Loss_G: 21.42 Loss_KL: 1.24 Time: 388.42s
+                      
+[15/600][245]
+                         Loss_D: 8.13 Loss_G: 17.89 Loss_KL: 1.49 Time: 388.20s
+                      
+Save G/Ds models.
+[16/600][245]
+                         Loss_D: 6.95 Loss_G: 22.45 Loss_KL: 1.13 Time: 394.97s
+                      
+[17/600][245]
+                         Loss_D: 3.49 Loss_G: 21.79 Loss_KL: 1.50 Time: 388.31s
+                      
+[18/600][245]
+                         Loss_D: 3.85 Loss_G: 21.96 Loss_KL: 1.70 Time: 385.78s
+                      
+[19/600][245]
+                         Loss_D: 7.85 Loss_G: 22.86 Loss_KL: 1.47 Time: 387.87s
+                      
+Save G/Ds models.
+[20/600][245]
+                         Loss_D: 6.29 Loss_G: 21.05 Loss_KL: 1.13 Time: 395.15s
+                      
+[21/600][245]
+                         Loss_D: 2.81 Loss_G: 33.04 Loss_KL: 1.22 Time: 387.71s
+                      
+[22/600][245]
+                         Loss_D: 5.93 Loss_G: 34.36 Loss_KL: 1.62 Time: 387.87s
+                      
+[23/600][245]
+                         Loss_D: 4.96 Loss_G: 17.97 Loss_KL: 1.36 Time: 388.30s
+                      
+Save G/Ds models.
+[24/600][245]
+                         Loss_D: 4.52 Loss_G: 20.04 Loss_KL: 1.33 Time: 397.12s
+                      
+[25/600][245]
+                         Loss_D: 6.75 Loss_G: 11.96 Loss_KL: 1.39 Time: 387.55s
+                      
+[26/600][245]
+                         Loss_D: 4.71 Loss_G: 19.28 Loss_KL: 1.81 Time: 387.60s
+                      
+[27/600][245]
+                         Loss_D: 6.84 Loss_G: 11.15 Loss_KL: 2.10 Time: 389.02s
+                      
+Save G/Ds models.
+[28/600][245]
+                         Loss_D: 7.57 Loss_G: 22.46 Loss_KL: 1.55 Time: 397.22s
+                      
+[29/600][245]
+                         Loss_D: 7.90 Loss_G: 16.61 Loss_KL: 1.72 Time: 388.38s
+                      
+[30/600][245]
+                         Loss_D: 3.04 Loss_G: 26.29 Loss_KL: 1.77 Time: 388.46s
+                      
+[31/600][245]
+                         Loss_D: 6.26 Loss_G: 34.92 Loss_KL: 1.91 Time: 386.53s
+                      
+Save G/Ds models.
+[32/600][245]
+                         Loss_D: 5.66 Loss_G: 35.74 Loss_KL: 1.61 Time: 395.72s
+                      
+[33/600][245]
+                         Loss_D: 5.93 Loss_G: 34.03 Loss_KL: 2.31 Time: 388.60s
+                      
+[34/600][245]
+                         Loss_D: 6.97 Loss_G: 29.68 Loss_KL: 2.13 Time: 388.21s
+                      
+[35/600][245]
+                         Loss_D: 3.69 Loss_G: 21.46 Loss_KL: 2.11 Time: 387.47s
+                      
+Save G/Ds models.
+[36/600][245]
+                         Loss_D: 5.69 Loss_G: 20.73 Loss_KL: 2.06 Time: 396.66s
+                      
+[37/600][245]
+                         Loss_D: 2.20 Loss_G: 29.84 Loss_KL: 2.42 Time: 388.59s
+                      
+[38/600][245]
+                         Loss_D: 5.36 Loss_G: 36.92 Loss_KL: 2.33 Time: 388.21s
+                      
+[39/600][245]
+                         Loss_D: 2.66 Loss_G: 29.42 Loss_KL: 2.48 Time: 388.46s
+                      
+Save G/Ds models.
+[40/600][245]
+                         Loss_D: 3.08 Loss_G: 29.07 Loss_KL: 2.18 Time: 397.03s
+                      
+[41/600][245]
+                         Loss_D: 3.81 Loss_G: 30.20 Loss_KL: 2.26 Time: 389.16s
+                      
+[42/600][245]
+                         Loss_D: 3.55 Loss_G: 36.27 Loss_KL: 2.59 Time: 388.97s
+                      
+[43/600][245]
+                         Loss_D: 4.14 Loss_G: 21.22 Loss_KL: 2.34 Time: 388.40s
+                      
+Save G/Ds models.
+[44/600][245]
+                         Loss_D: 5.49 Loss_G: 24.73 Loss_KL: 2.55 Time: 397.69s
+                      
+[45/600][245]
+                         Loss_D: 3.59 Loss_G: 23.29 Loss_KL: 2.46 Time: 388.82s
+                      
+[46/600][245]
+                         Loss_D: 2.12 Loss_G: 29.30 Loss_KL: 2.72 Time: 388.82s
+                      
+[47/600][245]
+                         Loss_D: 3.85 Loss_G: 33.39 Loss_KL: 3.59 Time: 388.20s
+                      
+Save G/Ds models.
+[48/600][245]
+                         Loss_D: 7.04 Loss_G: 22.93 Loss_KL: 2.18 Time: 396.23s
+                      
+[49/600][245]
+                         Loss_D: 6.02 Loss_G: 38.42 Loss_KL: 2.61 Time: 388.38s
+                      
+[50/600][245]
+                         Loss_D: 3.89 Loss_G: 19.42 Loss_KL: 2.78 Time: 388.89s
+                      
+[51/600][245]
+                         Loss_D: 2.78 Loss_G: 30.33 Loss_KL: 3.06 Time: 389.16s
+                      
+[52/600][245]
+                         Loss_D: 6.45 Loss_G: 36.03 Loss_KL: 2.70 Time: 388.75s
+                      
+Save G/Ds models.
+[53/600][245]
+                         Loss_D: 5.06 Loss_G: 22.39 Loss_KL: 2.74 Time: 396.67s
+                      
+[54/600][245]
+                         Loss_D: 2.88 Loss_G: 31.45 Loss_KL: 2.91 Time: 388.92s
+                      
+[55/600][245]
+                         Loss_D: 3.73 Loss_G: 33.35 Loss_KL: 3.04 Time: 388.80s
+                      
+[56/600][245]
+                         Loss_D: 4.54 Loss_G: 28.06 Loss_KL: 3.03 Time: 388.58s
+                      
+Save G/Ds models.
+[57/600][245]
+                         Loss_D: 3.11 Loss_G: 29.26 Loss_KL: 2.45 Time: 396.77s
+                      
+[58/600][245]
+                         Loss_D: 2.48 Loss_G: 29.73 Loss_KL: 2.78 Time: 389.03s
+                      
+[59/600][245]
+                         Loss_D: 3.10 Loss_G: 39.45 Loss_KL: 2.86 Time: 388.85s
+                      
+[60/600][245]
+                         Loss_D: 3.40 Loss_G: 36.13 Loss_KL: 2.83 Time: 389.36s
+                      
+Save G/Ds models.
+[61/600][245]
+                         Loss_D: 3.45 Loss_G: 33.94 Loss_KL: 3.00 Time: 396.63s
+                      
+[62/600][245]
+                         Loss_D: 1.50 Loss_G: 35.80 Loss_KL: 2.75 Time: 388.81s
+                      
+[63/600][245]
+                         Loss_D: 3.64 Loss_G: 38.80 Loss_KL: 3.29 Time: 388.03s
+                      
+[64/600][245]
+                         Loss_D: 2.59 Loss_G: 28.57 Loss_KL: 3.25 Time: 388.50s
+                      
+Save G/Ds models.
+[65/600][245]
+                         Loss_D: 4.91 Loss_G: 41.23 Loss_KL: 2.88 Time: 397.13s
+                      
+[66/600][245]
+                         Loss_D: 2.62 Loss_G: 26.61 Loss_KL: 3.52 Time: 388.80s
+                      
+[67/600][245]
+                         Loss_D: 4.98 Loss_G: 16.27 Loss_KL: 3.71 Time: 388.01s
+                      
+[68/600][245]
+                         Loss_D: 2.52 Loss_G: 44.47 Loss_KL: 3.61 Time: 388.19s
+                      
+Save G/Ds models.
+[69/600][245]
+                         Loss_D: 2.56 Loss_G: 33.00 Loss_KL: 3.05 Time: 397.60s
+                      
+[70/600][245]
+                         Loss_D: 3.79 Loss_G: 32.23 Loss_KL: 3.05 Time: 389.06s
+                      
+[71/600][245]
+                         Loss_D: 3.48 Loss_G: 38.83 Loss_KL: 3.22 Time: 389.27s
+                      
+[72/600][245]
+                         Loss_D: 5.05 Loss_G: 22.10 Loss_KL: 3.04 Time: 389.23s
+                      
+Save G/Ds models.
+[73/600][245]
+                         Loss_D: 2.29 Loss_G: 27.97 Loss_KL: 3.15 Time: 396.20s
+                      
+[74/600][245]
+                         Loss_D: 2.27 Loss_G: 38.11 Loss_KL: 3.04 Time: 389.08s
+                      
+[75/600][245]
+                         Loss_D: 1.52 Loss_G: 42.20 Loss_KL: 3.40 Time: 389.57s
+                      
+[76/600][245]
+                         Loss_D: 4.43 Loss_G: 45.96 Loss_KL: 3.74 Time: 388.94s
+                      
+Save G/Ds models.
+[77/600][245]
+                         Loss_D: 5.99 Loss_G: 38.62 Loss_KL: 3.92 Time: 397.22s
+                      
+[78/600][245]
+                         Loss_D: 2.67 Loss_G: 28.00 Loss_KL: 3.44 Time: 387.16s
+                      
+[79/600][245]
+                         Loss_D: 2.85 Loss_G: 27.99 Loss_KL: 3.39 Time: 387.16s
+                      
+[80/600][245]
+                         Loss_D: 4.11 Loss_G: 25.94 Loss_KL: 4.04 Time: 387.31s
+                      
+Save G/Ds models.
+[81/600][245]
+                         Loss_D: 7.93 Loss_G: 47.41 Loss_KL: 3.77 Time: 396.52s
+                      
+[82/600][245]
+                         Loss_D: 6.16 Loss_G: 42.22 Loss_KL: 3.66 Time: 388.06s
+                      
+[83/600][245]
+                         Loss_D: 3.32 Loss_G: 40.26 Loss_KL: 3.95 Time: 386.77s
+                      
+[84/600][245]
+                         Loss_D: 1.26 Loss_G: 35.47 Loss_KL: 3.92 Time: 389.59s
+                      
+Save G/Ds models.
+[85/600][245]
+                         Loss_D: 4.55 Loss_G: 38.97 Loss_KL: 3.69 Time: 397.76s
+                      
+[86/600][245]
+                         Loss_D: 4.05 Loss_G: 41.94 Loss_KL: 3.59 Time: 388.83s
+                      
+[87/600][245]
+                         Loss_D: 7.21 Loss_G: 29.23 Loss_KL: 3.91 Time: 388.80s
+                      
+[88/600][245]
+                         Loss_D: 1.41 Loss_G: 29.58 Loss_KL: 4.26 Time: 389.32s
+                      
+Save G/Ds models.
+[89/600][245]
+                         Loss_D: 4.04 Loss_G: 28.37 Loss_KL: 3.77 Time: 397.62s
+                      
+[90/600][245]
+                         Loss_D: 3.29 Loss_G: 37.27 Loss_KL: 4.15 Time: 388.71s
+                      
+[91/600][245]
+                         Loss_D: 2.86 Loss_G: 27.41 Loss_KL: 4.03 Time: 386.97s
+                      
+[92/600][245]
+                         Loss_D: 5.92 Loss_G: 30.70 Loss_KL: 4.00 Time: 388.79s
+                      
+Save G/Ds models.
+[93/600][245]
+                         Loss_D: 3.17 Loss_G: 33.10 Loss_KL: 4.05 Time: 397.92s
+                      
+[94/600][245]
+                         Loss_D: 3.16 Loss_G: 45.19 Loss_KL: 4.28 Time: 389.01s
+                      
+[95/600][245]
+                         Loss_D: 2.07 Loss_G: 39.15 Loss_KL: 4.38 Time: 387.80s
+                      
+[96/600][245]
+                         Loss_D: 1.91 Loss_G: 31.03 Loss_KL: 4.59 Time: 389.77s
+                      
+Save G/Ds models.
+[97/600][245]
+                         Loss_D: 5.20 Loss_G: 30.12 Loss_KL: 4.14 Time: 397.38s
+                      
+[98/600][245]
+                         Loss_D: 1.24 Loss_G: 35.47 Loss_KL: 4.28 Time: 388.42s
+                      
+[99/600][245]
+                         Loss_D: 2.23 Loss_G: 29.62 Loss_KL: 4.10 Time: 387.75s
+                      
+[100/600][245]
+                         Loss_D: 4.46 Loss_G: 43.67 Loss_KL: 3.95 Time: 388.57s
+                      
+[101/600][245]
+                         Loss_D: 7.84 Loss_G: 56.00 Loss_KL: 5.03 Time: 388.70s
+                      
+Save G/Ds models.
+[102/600][245]
+                         Loss_D: 2.86 Loss_G: 30.11 Loss_KL: 4.37 Time: 396.80s
+                      
+[103/600][245]
+                         Loss_D: 2.84 Loss_G: 29.45 Loss_KL: 4.00 Time: 389.16s
+                      
+[104/600][245]
+                         Loss_D: 1.94 Loss_G: 33.08 Loss_KL: 4.77 Time: 387.42s
+                      
+[105/600][245]
+                         Loss_D: 1.29 Loss_G: 44.61 Loss_KL: 4.50 Time: 388.06s
+                      
+Save G/Ds models.
+[106/600][245]
+                         Loss_D: 2.87 Loss_G: 34.81 Loss_KL: 4.32 Time: 398.30s
+                      
+[107/600][245]
+                         Loss_D: 0.85 Loss_G: 34.53 Loss_KL: 4.15 Time: 390.38s
+                      
+[108/600][245]
+                         Loss_D: 2.62 Loss_G: 30.06 Loss_KL: 4.31 Time: 389.53s
+                      
+[109/600][245]
+                         Loss_D: 2.09 Loss_G: 38.07 Loss_KL: 4.63 Time: 389.38s
+                      
+Save G/Ds models.
+[110/600][245]
+                         Loss_D: 3.27 Loss_G: 45.08 Loss_KL: 4.28 Time: 396.88s
+                      
+[111/600][245]
+                         Loss_D: 3.29 Loss_G: 36.95 Loss_KL: 4.14 Time: 388.91s
+                      
+[112/600][245]
+                         Loss_D: 7.02 Loss_G: 44.21 Loss_KL: 4.53 Time: 388.14s
+                      
+[113/600][245]
+                         Loss_D: 2.44 Loss_G: 35.42 Loss_KL: 4.76 Time: 388.52s
+                      
+Save G/Ds models.
+[114/600][245]
+                         Loss_D: 2.03 Loss_G: 29.98 Loss_KL: 4.34 Time: 398.44s
+                      
+[115/600][245]
+                         Loss_D: 3.33 Loss_G: 36.27 Loss_KL: 4.29 Time: 389.55s
+                      
+[116/600][245]
+                         Loss_D: 2.73 Loss_G: 40.12 Loss_KL: 4.54 Time: 389.66s
+                      
+[117/600][245]
+                         Loss_D: 5.35 Loss_G: 24.17 Loss_KL: 4.22 Time: 389.75s
+                      
+Save G/Ds models.
+[118/600][245]
+                         Loss_D: 2.45 Loss_G: 35.59 Loss_KL: 4.29 Time: 398.32s
+                      
+[119/600][245]
+                         Loss_D: 4.18 Loss_G: 36.71 Loss_KL: 4.24 Time: 389.26s
+                      
+[120/600][245]
+                         Loss_D: 3.55 Loss_G: 45.44 Loss_KL: 4.84 Time: 389.58s
+                      
+[121/600][245]
+                         Loss_D: 2.01 Loss_G: 42.34 Loss_KL: 5.14 Time: 389.56s
+                      
+Save G/Ds models.
+[122/600][245]
+                         Loss_D: 2.43 Loss_G: 44.01 Loss_KL: 4.68 Time: 397.43s
+                      
+[123/600][245]
+                         Loss_D: 1.74 Loss_G: 34.38 Loss_KL: 4.97 Time: 388.01s
+                      
+[124/600][245]
+                         Loss_D: 3.16 Loss_G: 40.23 Loss_KL: 4.78 Time: 387.76s
+                      
+[125/600][245]
+                         Loss_D: 0.60 Loss_G: 41.42 Loss_KL: 4.93 Time: 388.46s
+                      
+Save G/Ds models.
+[126/600][245]
+                         Loss_D: 3.61 Loss_G: 27.15 Loss_KL: 4.55 Time: 398.28s
+                      
+[127/600][245]
+                         Loss_D: 2.58 Loss_G: 32.35 Loss_KL: 5.11 Time: 389.81s
+                      
+[128/600][245]
+                         Loss_D: 3.35 Loss_G: 46.20 Loss_KL: 5.54 Time: 390.21s
+                      
+[129/600][245]
+                         Loss_D: 2.08 Loss_G: 41.89 Loss_KL: 5.19 Time: 389.02s
+                      
+Save G/Ds models.
+[130/600][245]
+                         Loss_D: 9.27 Loss_G: 43.18 Loss_KL: 4.50 Time: 397.81s
+                      
+[131/600][245]
+                         Loss_D: 2.10 Loss_G: 32.85 Loss_KL: 4.55 Time: 389.58s
+                      
+[132/600][245]
+                         Loss_D: 2.47 Loss_G: 43.03 Loss_KL: 4.60 Time: 389.58s
+                      
+[133/600][245]
+                         Loss_D: 3.74 Loss_G: 48.44 Loss_KL: 4.70 Time: 389.37s
+                      
+Save G/Ds models.
+[134/600][245]
+                         Loss_D: 3.36 Loss_G: 34.17 Loss_KL: 5.44 Time: 397.73s
+                      
+[135/600][245]
+                         Loss_D: 2.22 Loss_G: 27.85 Loss_KL: 4.97 Time: 387.55s
+                      
+[136/600][245]
+                         Loss_D: 1.88 Loss_G: 44.74 Loss_KL: 5.17 Time: 388.59s
+                      
+[137/600][245]
+                         Loss_D: 2.51 Loss_G: 39.45 Loss_KL: 5.23 Time: 388.99s
+                      
+Save G/Ds models.
+[138/600][245]
+                         Loss_D: 6.09 Loss_G: 30.19 Loss_KL: 4.78 Time: 396.60s
+                      
+[139/600][245]
+                         Loss_D: 2.31 Loss_G: 40.40 Loss_KL: 4.93 Time: 388.55s
+                      
+[140/600][245]
+                         Loss_D: 2.21 Loss_G: 34.14 Loss_KL: 5.37 Time: 389.73s
+                      
+[141/600][245]
+                         Loss_D: 2.94 Loss_G: 49.78 Loss_KL: 5.26 Time: 389.05s
+                      
+Save G/Ds models.
+[142/600][245]
+                         Loss_D: 6.59 Loss_G: 43.98 Loss_KL: 5.19 Time: 398.44s
+                      
+[143/600][245]
+                         Loss_D: 2.05 Loss_G: 40.97 Loss_KL: 5.48 Time: 389.25s
+                      
+[144/600][245]
+                         Loss_D: 2.43 Loss_G: 47.09 Loss_KL: 5.20 Time: 389.97s
+                      
+[145/600][245]
+                         Loss_D: 1.35 Loss_G: 39.79 Loss_KL: 5.71 Time: 387.46s
+                      
+Save G/Ds models.
+[146/600][245]
+                         Loss_D: 3.10 Loss_G: 45.04 Loss_KL: 4.98 Time: 397.31s
+                      
+[147/600][245]
+                         Loss_D: 1.77 Loss_G: 27.84 Loss_KL: 5.26 Time: 388.04s
+                      
+[148/600][245]
+                         Loss_D: 3.01 Loss_G: 51.86 Loss_KL: 6.03 Time: 388.82s
+                      
+[149/600][245]
+                         Loss_D: 2.61 Loss_G: 37.84 Loss_KL: 5.57 Time: 388.95s
+                      
+[150/600][245]
+                         Loss_D: 1.15 Loss_G: 35.91 Loss_KL: 5.47 Time: 387.69s
+                      
+Save G/Ds models.
+[151/600][245]
+                         Loss_D: 2.71 Loss_G: 30.90 Loss_KL: 5.00 Time: 395.12s
+                      
+[152/600][245]
+                         Loss_D: 5.45 Loss_G: 26.69 Loss_KL: 5.72 Time: 387.54s
+                      
+[153/600][245]
+                         Loss_D: 2.80 Loss_G: 42.84 Loss_KL: 5.83 Time: 387.70s
+                      
+[154/600][245]
+                         Loss_D: 2.44 Loss_G: 31.50 Loss_KL: 5.70 Time: 387.30s
+                      
+Save G/Ds models.
+[155/600][245]
+                         Loss_D: 1.01 Loss_G: 31.47 Loss_KL: 5.67 Time: 396.12s
+                      
+[156/600][245]
+                         Loss_D: 3.17 Loss_G: 34.10 Loss_KL: 5.53 Time: 389.33s
+                      
+[157/600][245]
+                         Loss_D: 1.97 Loss_G: 50.70 Loss_KL: 5.74 Time: 387.91s
+                      
+[158/600][245]
+                         Loss_D: 1.33 Loss_G: 38.67 Loss_KL: 6.25 Time: 388.14s
+                      
+Save G/Ds models.
+[159/600][245]
+                         Loss_D: 2.70 Loss_G: 39.88 Loss_KL: 5.56 Time: 397.15s
+                      
+[160/600][245]
+                         Loss_D: 2.60 Loss_G: 35.70 Loss_KL: 5.95 Time: 388.51s
+                      
+[161/600][245]
+                         Loss_D: 2.10 Loss_G: 43.02 Loss_KL: 6.07 Time: 389.81s
+                      
+[162/600][245]
+                         Loss_D: 0.94 Loss_G: 36.24 Loss_KL: 6.04 Time: 389.92s
+                      
+Save G/Ds models.
+[163/600][245]
+                         Loss_D: 1.44 Loss_G: 38.94 Loss_KL: 5.63 Time: 396.44s
+                      
+[164/600][245]
+                         Loss_D: 2.98 Loss_G: 49.49 Loss_KL: 5.66 Time: 389.40s
+                      
+[165/600][245]
+                         Loss_D: 4.26 Loss_G: 45.07 Loss_KL: 6.45 Time: 389.61s
+                      
+[166/600][245]
+                         Loss_D: 2.36 Loss_G: 54.11 Loss_KL: 5.85 Time: 389.14s
+                      
+Save G/Ds models.
+[167/600][245]
+                         Loss_D: 1.89 Loss_G: 32.06 Loss_KL: 5.99 Time: 398.91s
+                      
+[168/600][245]
+                         Loss_D: 2.70 Loss_G: 36.36 Loss_KL: 5.64 Time: 389.83s
+                      
+[169/600][245]
+                         Loss_D: 1.50 Loss_G: 30.14 Loss_KL: 6.28 Time: 390.45s
+                      
+[170/600][245]
+                         Loss_D: 7.05 Loss_G: 39.57 Loss_KL: 5.99 Time: 390.25s
+                      
+Save G/Ds models.
+[171/600][245]
+                         Loss_D: 2.12 Loss_G: 38.44 Loss_KL: 5.72 Time: 396.85s
+                      
+[172/600][245]
+                         Loss_D: 4.13 Loss_G: 46.09 Loss_KL: 6.35 Time: 389.81s
+                      
+[173/600][245]
+                         Loss_D: 6.85 Loss_G: 17.82 Loss_KL: 6.49 Time: 390.12s
+                      
+[174/600][245]
+                         Loss_D: 1.45 Loss_G: 35.27 Loss_KL: 6.60 Time: 389.82s
+                      
+Save G/Ds models.
+[175/600][245]
+                         Loss_D: 1.15 Loss_G: 34.45 Loss_KL: 6.42 Time: 399.31s
+                      
+[176/600][245]
+                         Loss_D: 1.71 Loss_G: 43.22 Loss_KL: 6.47 Time: 389.61s
+                      
+[177/600][245]
+                         Loss_D: 1.48 Loss_G: 41.76 Loss_KL: 6.76 Time: 389.85s
+                      
+[178/600][245]
+                         Loss_D: 1.93 Loss_G: 36.57 Loss_KL: 6.48 Time: 390.62s
+                      
+Save G/Ds models.
+[179/600][245]
+                         Loss_D: 6.82 Loss_G: 27.90 Loss_KL: 6.45 Time: 397.79s
+                      
+[180/600][245]
+                         Loss_D: 4.87 Loss_G: 53.86 Loss_KL: 6.50 Time: 389.60s
+                      
+[181/600][245]
+                         Loss_D: 0.85 Loss_G: 41.95 Loss_KL: 6.23 Time: 390.11s
+                      
+[182/600][245]
+                         Loss_D: 0.95 Loss_G: 39.43 Loss_KL: 6.14 Time: 389.63s
+                      
+Save G/Ds models.
+[183/600][245]
+                         Loss_D: 6.78 Loss_G: 52.24 Loss_KL: 5.84 Time: 398.19s
+                      
+[184/600][245]
+                         Loss_D: 2.43 Loss_G: 34.47 Loss_KL: 6.18 Time: 389.59s
+                      
+[185/600][245]
+                         Loss_D: 5.33 Loss_G: 51.50 Loss_KL: 6.49 Time: 389.84s
+                      
+[186/600][245]
+                         Loss_D: 1.28 Loss_G: 42.40 Loss_KL: 7.26 Time: 389.91s
+                      
+Save G/Ds models.
+[187/600][245]
+                         Loss_D: 4.27 Loss_G: 42.98 Loss_KL: 6.36 Time: 397.41s
+                      
+[188/600][245]
+                         Loss_D: 1.71 Loss_G: 40.84 Loss_KL: 6.73 Time: 389.78s
+                      
+[189/600][245]
+                         Loss_D: 1.41 Loss_G: 47.72 Loss_KL: 6.87 Time: 389.88s
+                      
+[190/600][245]
+                         Loss_D: 3.28 Loss_G: 40.07 Loss_KL: 7.28 Time: 389.16s
+                      
+Save G/Ds models.
+[191/600][245]
+                         Loss_D: 3.71 Loss_G: 31.65 Loss_KL: 6.68 Time: 398.66s
+                      
+[192/600][245]
+                         Loss_D: 1.83 Loss_G: 35.98 Loss_KL: 6.18 Time: 389.75s
+                      
+[193/600][245]
+                         Loss_D: 0.74 Loss_G: 39.10 Loss_KL: 6.28 Time: 390.26s
+                      
+[194/600][245]
+                         Loss_D: 2.65 Loss_G: 51.83 Loss_KL: 6.83 Time: 390.69s
+                      
+Save G/Ds models.
+[195/600][245]
+                         Loss_D: 8.26 Loss_G: 29.90 Loss_KL: 6.78 Time: 397.99s
+                      
+[196/600][245]
+                         Loss_D: 2.46 Loss_G: 35.29 Loss_KL: 6.75 Time: 389.78s
+                      
+[197/600][245]
+                         Loss_D: 4.10 Loss_G: 39.29 Loss_KL: 6.87 Time: 388.78s
+                      
+[198/600][245]
+                         Loss_D: 3.16 Loss_G: 47.75 Loss_KL: 6.91 Time: 390.38s
+                      
+Save G/Ds models.
+[199/600][245]
+                         Loss_D: 2.17 Loss_G: 42.72 Loss_KL: 6.70 Time: 398.39s
+                      
+[200/600][245]
+                         Loss_D: 2.44 Loss_G: 35.11 Loss_KL: 6.62 Time: 389.81s
+                      
+[201/600][245]
+                         Loss_D: 0.89 Loss_G: 37.70 Loss_KL: 6.34 Time: 389.75s
+                      
+[202/600][245]
+                         Loss_D: 3.90 Loss_G: 46.66 Loss_KL: 6.59 Time: 390.01s
+                      
+[203/600][245]
+                         Loss_D: 1.64 Loss_G: 43.88 Loss_KL: 6.63 Time: 389.96s
+                      
+Save G/Ds models.
+[204/600][245]
+                         Loss_D: 1.34 Loss_G: 45.55 Loss_KL: 7.07 Time: 398.51s
+                      
+[205/600][245]
+                         Loss_D: 2.82 Loss_G: 35.50 Loss_KL: 6.90 Time: 390.21s
+                      
+[206/600][245]
+                         Loss_D: 3.97 Loss_G: 35.76 Loss_KL: 6.81 Time: 390.44s
+                      
+[207/600][245]
+                         Loss_D: 1.79 Loss_G: 45.15 Loss_KL: 7.13 Time: 390.52s
+                      
+Save G/Ds models.
+[208/600][245]
+                         Loss_D: 1.71 Loss_G: 36.55 Loss_KL: 6.71 Time: 399.01s
+                      
+[209/600][245]
+                         Loss_D: 3.76 Loss_G: 32.34 Loss_KL: 7.13 Time: 390.44s
+                      
+[210/600][245]
+                         Loss_D: 4.24 Loss_G: 53.57 Loss_KL: 6.98 Time: 391.23s
+                      
+[211/600][245]
+                         Loss_D: 2.82 Loss_G: 52.52 Loss_KL: 7.18 Time: 389.25s
+                      
+Save G/Ds models.
+[212/600][245]
+                         Loss_D: 2.42 Loss_G: 43.90 Loss_KL: 6.71 Time: 398.49s
+                      
+[213/600][245]
+                         Loss_D: 1.01 Loss_G: 39.64 Loss_KL: 6.01 Time: 389.58s
+                      
+[214/600][245]
+                         Loss_D: 1.93 Loss_G: 56.52 Loss_KL: 7.13 Time: 390.40s
+                      
+[215/600][245]
+                         Loss_D: 2.36 Loss_G: 46.65 Loss_KL: 6.89 Time: 389.56s
+                      
+Save G/Ds models.
+[216/600][245]
+                         Loss_D: 1.40 Loss_G: 48.14 Loss_KL: 6.41 Time: 397.42s
+                      
+[217/600][245]
+                         Loss_D: 2.80 Loss_G: 46.87 Loss_KL: 6.90 Time: 389.62s
+                      
+[218/600][245]
+                         Loss_D: 3.16 Loss_G: 49.16 Loss_KL: 6.60 Time: 389.25s
+                      
+[219/600][245]
+                         Loss_D: 3.38 Loss_G: 47.65 Loss_KL: 7.03 Time: 389.01s
+                      
+Save G/Ds models.
+[220/600][245]
+                         Loss_D: 2.45 Loss_G: 39.01 Loss_KL: 6.39 Time: 397.63s
+                      
+[221/600][245]
+                         Loss_D: 1.73 Loss_G: 57.18 Loss_KL: 7.09 Time: 389.93s
+                      
+[222/600][245]
+                         Loss_D: 5.22 Loss_G: 23.50 Loss_KL: 6.70 Time: 390.66s
+                      
+[223/600][245]
+                         Loss_D: 1.86 Loss_G: 46.95 Loss_KL: 6.76 Time: 389.90s
+                      
+Save G/Ds models.
+[224/600][245]
+                         Loss_D: 2.84 Loss_G: 35.14 Loss_KL: 6.82 Time: 397.90s
+                      
+[225/600][245]
+                         Loss_D: 3.02 Loss_G: 31.47 Loss_KL: 6.75 Time: 389.91s
+                      
+[226/600][245]
+                         Loss_D: 0.95 Loss_G: 42.41 Loss_KL: 7.08 Time: 390.19s
+                      
+[227/600][245]
+                         Loss_D: 1.53 Loss_G: 38.99 Loss_KL: 7.09 Time: 389.97s
+                      
+Save G/Ds models.
+[228/600][245]
+                         Loss_D: 3.27 Loss_G: 27.92 Loss_KL: 6.75 Time: 398.07s
+                      
+[229/600][245]
+                         Loss_D: 4.11 Loss_G: 45.62 Loss_KL: 7.03 Time: 390.19s
+                      
+[230/600][245]
+                         Loss_D: 2.60 Loss_G: 50.46 Loss_KL: 7.23 Time: 390.62s
+                      
+[231/600][245]
+                         Loss_D: 2.29 Loss_G: 51.31 Loss_KL: 6.88 Time: 390.00s
+                      
+Save G/Ds models.
+[232/600][245]
+                         Loss_D: 3.62 Loss_G: 38.06 Loss_KL: 6.94 Time: 398.08s
+                      
+[233/600][245]
+                         Loss_D: 3.01 Loss_G: 29.79 Loss_KL: 7.36 Time: 390.14s
+                      
+[234/600][245]
+                         Loss_D: 2.40 Loss_G: 47.01 Loss_KL: 7.39 Time: 390.28s
+                      
+[235/600][245]
+                         Loss_D: 1.79 Loss_G: 45.39 Loss_KL: 7.63 Time: 389.68s
+                      
+Save G/Ds models.
+[236/600][245]
+                         Loss_D: 2.60 Loss_G: 44.93 Loss_KL: 7.28 Time: 396.46s
+                      
+[237/600][245]
+                         Loss_D: 1.99 Loss_G: 45.62 Loss_KL: 7.18 Time: 389.95s
+                      
+[238/600][245]
+                         Loss_D: 2.32 Loss_G: 45.07 Loss_KL: 7.34 Time: 388.06s
+                      
+[239/600][245]
+                         Loss_D: 1.65 Loss_G: 41.57 Loss_KL: 7.28 Time: 389.24s
+                      
+Save G/Ds models.
+[240/600][245]
+                         Loss_D: 3.27 Loss_G: 38.63 Loss_KL: 7.23 Time: 399.14s
+                      
+[241/600][245]
+                         Loss_D: 1.16 Loss_G: 42.20 Loss_KL: 7.19 Time: 389.69s
+                      
+[242/600][245]
+                         Loss_D: 1.94 Loss_G: 32.79 Loss_KL: 7.11 Time: 389.98s
+                      
+[243/600][245]
+                         Loss_D: 1.53 Loss_G: 54.74 Loss_KL: 7.96 Time: 389.93s
+                      
+Save G/Ds models.
+[244/600][245]
+                         Loss_D: 4.02 Loss_G: 60.77 Loss_KL: 7.34 Time: 397.89s
+                      
+[245/600][245]
+                         Loss_D: 3.74 Loss_G: 48.95 Loss_KL: 7.23 Time: 388.25s
+                      
+[246/600][245]
+                         Loss_D: 4.69 Loss_G: 51.91 Loss_KL: 7.48 Time: 389.77s
+                      
+[247/600][245]
+                         Loss_D: 1.32 Loss_G: 45.13 Loss_KL: 7.52 Time: 389.79s
+                      
+Save G/Ds models.
+[248/600][245]
+                         Loss_D: 6.24 Loss_G: 14.31 Loss_KL: 7.04 Time: 398.45s
+                      
+[249/600][245]
+                         Loss_D: 2.93 Loss_G: 36.43 Loss_KL: 7.35 Time: 390.73s
+                      
+[250/600][245]
+                         Loss_D: 2.97 Loss_G: 37.14 Loss_KL: 7.62 Time: 390.01s
+                      
+[251/600][245]
+                         Loss_D: 1.62 Loss_G: 46.53 Loss_KL: 7.50 Time: 390.78s
+                      
+[252/600][245]
+                         Loss_D: 1.08 Loss_G: 50.31 Loss_KL: 7.75 Time: 389.23s
+                      
+Save G/Ds models.
+[253/600][245]
+                         Loss_D: 2.34 Loss_G: 40.60 Loss_KL: 7.76 Time: 398.48s
+                      
+[254/600][245]
+                         Loss_D: 3.64 Loss_G: 47.67 Loss_KL: 7.56 Time: 390.17s
+                      
+[255/600][245]
+                         Loss_D: 1.34 Loss_G: 46.91 Loss_KL: 7.48 Time: 390.10s
+                      
+[256/600][245]
+                         Loss_D: 0.93 Loss_G: 40.90 Loss_KL: 7.48 Time: 389.93s
+                      
+Save G/Ds models.
+[257/600][245]
+                         Loss_D: 1.26 Loss_G: 41.48 Loss_KL: 7.76 Time: 397.74s
+                      
+[258/600][245]
+                         Loss_D: 2.83 Loss_G: 37.72 Loss_KL: 7.85 Time: 389.34s
+                      
+[259/600][245]
+                         Loss_D: 1.41 Loss_G: 43.44 Loss_KL: 7.48 Time: 389.77s
+                      
+[260/600][245]
+                         Loss_D: 0.60 Loss_G: 46.04 Loss_KL: 7.65 Time: 388.03s
+                      
+Save G/Ds models.
+[261/600][245]
+                         Loss_D: 1.89 Loss_G: 44.12 Loss_KL: 7.41 Time: 398.22s
+                      
+[262/600][245]
+                         Loss_D: 2.69 Loss_G: 55.79 Loss_KL: 7.56 Time: 388.38s
+                      
+[263/600][245]
+                         Loss_D: 0.34 Loss_G: 52.95 Loss_KL: 8.23 Time: 390.11s
+                      
+[264/600][245]
+                         Loss_D: 1.23 Loss_G: 44.84 Loss_KL: 7.45 Time: 389.15s
+                      
+Save G/Ds models.
+[265/600][245]
+                         Loss_D: 4.87 Loss_G: 51.11 Loss_KL: 7.59 Time: 398.48s
+                      
+[266/600][245]
+                         Loss_D: 2.64 Loss_G: 53.28 Loss_KL: 8.12 Time: 389.84s
+                      
+[267/600][245]
+                         Loss_D: 1.92 Loss_G: 47.11 Loss_KL: 8.03 Time: 390.24s
+                      
+[268/600][245]
+                         Loss_D: 0.56 Loss_G: 60.10 Loss_KL: 7.93 Time: 389.63s
+                      
+Save G/Ds models.
+[269/600][245]
+                         Loss_D: 6.25 Loss_G: 35.75 Loss_KL: 8.12 Time: 399.11s
+                      
+[270/600][245]
+                         Loss_D: 1.98 Loss_G: 45.83 Loss_KL: 7.77 Time: 389.82s
+                      
+[271/600][245]
+                         Loss_D: 2.81 Loss_G: 48.35 Loss_KL: 8.34 Time: 390.65s
+                      
+[272/600][245]
+                         Loss_D: 0.51 Loss_G: 49.06 Loss_KL: 8.22 Time: 389.56s
+                      
+Save G/Ds models.
+[273/600][245]
+                         Loss_D: 3.66 Loss_G: 42.74 Loss_KL: 7.71 Time: 397.96s
+                      
+[274/600][245]
+                         Loss_D: 0.82 Loss_G: 46.16 Loss_KL: 7.55 Time: 390.56s
+                      
+[275/600][245]
+                         Loss_D: 1.40 Loss_G: 45.14 Loss_KL: 8.37 Time: 390.84s
+                      
+[276/600][245]
+                         Loss_D: 1.66 Loss_G: 50.62 Loss_KL: 8.06 Time: 389.94s
+                      
+Save G/Ds models.
+[277/600][245]
+                         Loss_D: 5.25 Loss_G: 45.45 Loss_KL: 8.01 Time: 396.76s
+                      
+[278/600][245]
+                         Loss_D: 2.33 Loss_G: 44.84 Loss_KL: 7.38 Time: 390.71s
+                      
+[279/600][245]
+                         Loss_D: 4.39 Loss_G: 51.51 Loss_KL: 8.80 Time: 389.97s
+                      
+[280/600][245]
+                         Loss_D: 3.05 Loss_G: 72.64 Loss_KL: 8.89 Time: 389.42s
+                      
+Save G/Ds models.
+[281/600][245]
+                         Loss_D: 4.54 Loss_G: 41.45 Loss_KL: 8.32 Time: 398.95s
+                      
+[282/600][245]
+                         Loss_D: 3.35 Loss_G: 50.44 Loss_KL: 8.05 Time: 389.52s
+                      
+[283/600][245]
+                         Loss_D: 2.40 Loss_G: 63.94 Loss_KL: 8.05 Time: 389.63s
+                      
+[284/600][245]
+                         Loss_D: 1.45 Loss_G: 48.20 Loss_KL: 8.13 Time: 390.77s
+                      
+Save G/Ds models.
+[285/600][245]
+                         Loss_D: 4.66 Loss_G: 24.69 Loss_KL: 8.55 Time: 398.03s
+                      
+[286/600][245]
+                         Loss_D: 2.73 Loss_G: 43.80 Loss_KL: 8.37 Time: 389.15s
+                      
+[287/600][245]
+                         Loss_D: 4.00 Loss_G: 53.32 Loss_KL: 8.90 Time: 389.92s
+                      
+[288/600][245]
+                         Loss_D: 2.23 Loss_G: 31.46 Loss_KL: 8.40 Time: 389.78s
+                      
+Save G/Ds models.
+[289/600][245]
+                         Loss_D: 5.15 Loss_G: 55.91 Loss_KL: 8.23 Time: 399.17s
+                      
+[290/600][245]
+                         Loss_D: 6.06 Loss_G: 34.01 Loss_KL: 8.24 Time: 390.32s
+                      
+[291/600][245]
+                         Loss_D: 2.30 Loss_G: 47.46 Loss_KL: 8.34 Time: 387.80s
+                      
+[292/600][245]
+                         Loss_D: 0.80 Loss_G: 46.45 Loss_KL: 8.12 Time: 390.42s
+                      
+Save G/Ds models.
+[293/600][245]
+                         Loss_D: 3.04 Loss_G: 40.75 Loss_KL: 8.54 Time: 399.02s
+                      
+[294/600][245]
+                         Loss_D: 1.38 Loss_G: 48.92 Loss_KL: 8.68 Time: 390.53s
+                      
+[295/600][245]
+                         Loss_D: 2.00 Loss_G: 42.26 Loss_KL: 7.91 Time: 390.19s
+                      
+[296/600][245]
+                         Loss_D: 1.99 Loss_G: 39.06 Loss_KL: 9.02 Time: 389.65s
+                      
+Save G/Ds models.
+[297/600][245]
+                         Loss_D: 2.00 Loss_G: 39.41 Loss_KL: 8.83 Time: 399.35s
+                      
+[298/600][245]
+                         Loss_D: 0.98 Loss_G: 39.71 Loss_KL: 8.62 Time: 389.09s
+                      
+[299/600][245]
+                         Loss_D: 2.38 Loss_G: 53.07 Loss_KL: 8.37 Time: 389.73s
+                      
+[300/600][245]
+                         Loss_D: 1.93 Loss_G: 52.07 Loss_KL: 8.40 Time: 388.95s
+                      
+[301/600][245]
+                         Loss_D: 1.77 Loss_G: 37.47 Loss_KL: 8.46 Time: 390.60s
+                      
+Save G/Ds models.
+[302/600][245]
+                         Loss_D: 1.31 Loss_G: 32.65 Loss_KL: 8.63 Time: 399.33s
+                      
+[303/600][245]
+                         Loss_D: 2.71 Loss_G: 37.61 Loss_KL: 8.45 Time: 390.11s
+                      
+[304/600][245]
+                         Loss_D: 2.98 Loss_G: 40.32 Loss_KL: 8.75 Time: 390.48s
+                      
+[305/600][245]
+                         Loss_D: 0.83 Loss_G: 43.40 Loss_KL: 8.93 Time: 390.54s
+                      
+Save G/Ds models.
+[306/600][245]
+                         Loss_D: 3.13 Loss_G: 58.67 Loss_KL: 8.71 Time: 399.10s
+                      
+[307/600][245]
+                         Loss_D: 2.92 Loss_G: 48.01 Loss_KL: 9.26 Time: 390.17s
+                      
+[308/600][245]
+                         Loss_D: 1.74 Loss_G: 38.99 Loss_KL: 9.23 Time: 388.48s
+                      
+[309/600][245]
+                         Loss_D: 2.93 Loss_G: 46.40 Loss_KL: 8.65 Time: 389.94s
+                      
+Save G/Ds models.
+[310/600][245]
+                         Loss_D: 2.51 Loss_G: 43.03 Loss_KL: 8.74 Time: 397.08s
+                      
+[311/600][245]
+                         Loss_D: 1.40 Loss_G: 47.90 Loss_KL: 8.80 Time: 389.27s
+                      
+[312/600][245]
+                         Loss_D: 1.95 Loss_G: 56.47 Loss_KL: 9.21 Time: 390.22s
+                      
+[313/600][245]
+                         Loss_D: 2.88 Loss_G: 51.52 Loss_KL: 9.60 Time: 389.73s
+                      
+Save G/Ds models.
+[314/600][245]
+                         Loss_D: 2.05 Loss_G: 33.22 Loss_KL: 8.74 Time: 396.53s
+                      
+[315/600][245]
+                         Loss_D: 2.61 Loss_G: 38.21 Loss_KL: 8.99 Time: 390.32s
+                      
+[316/600][245]
+                         Loss_D: 0.85 Loss_G: 40.86 Loss_KL: 8.89 Time: 389.83s
+                      
+[317/600][245]
+                         Loss_D: 0.90 Loss_G: 51.58 Loss_KL: 8.83 Time: 390.37s
+                      
+Save G/Ds models.
+[318/600][245]
+                         Loss_D: 2.46 Loss_G: 38.55 Loss_KL: 8.58 Time: 396.70s
+                      
+[319/600][245]
+                         Loss_D: 0.86 Loss_G: 47.19 Loss_KL: 8.98 Time: 390.28s
+                      
+[320/600][245]
+                         Loss_D: 1.51 Loss_G: 40.89 Loss_KL: 8.76 Time: 390.26s
+                      
+[321/600][245]
+                         Loss_D: 0.95 Loss_G: 53.84 Loss_KL: 9.14 Time: 390.66s
+                      
+Save G/Ds models.
+[322/600][245]
+                         Loss_D: 5.68 Loss_G: 47.58 Loss_KL: 8.89 Time: 399.56s
+                      
+[323/600][245]
+                         Loss_D: 2.02 Loss_G: 52.33 Loss_KL: 9.09 Time: 390.04s
+                      
+[324/600][245]
+                         Loss_D: 0.71 Loss_G: 48.40 Loss_KL: 9.25 Time: 390.10s
+                      
+[325/600][245]
+                         Loss_D: 1.81 Loss_G: 55.54 Loss_KL: 9.43 Time: 389.49s
+                      
+Save G/Ds models.
+[326/600][245]
+                         Loss_D: 2.07 Loss_G: 48.16 Loss_KL: 8.83 Time: 394.97s
+                      
+[327/600][245]
+                         Loss_D: 2.94 Loss_G: 37.45 Loss_KL: 8.90 Time: 389.62s
+                      
+[328/600][245]
+                         Loss_D: 5.40 Loss_G: 54.11 Loss_KL: 9.02 Time: 388.70s
+                      
+[329/600][245]
+                         Loss_D: 1.38 Loss_G: 48.77 Loss_KL: 9.43 Time: 391.20s
+                      
+Save G/Ds models.
+[330/600][245]
+                         Loss_D: 1.60 Loss_G: 68.59 Loss_KL: 8.78 Time: 399.93s
+                      
+[331/600][245]
+                         Loss_D: 0.72 Loss_G: 42.44 Loss_KL: 9.13 Time: 389.59s
+                      
+[332/600][245]
+                         Loss_D: 1.62 Loss_G: 44.31 Loss_KL: 9.96 Time: 390.66s
+                      
+[333/600][245]
+                         Loss_D: 2.54 Loss_G: 52.36 Loss_KL: 9.48 Time: 389.79s
+                      
+Save G/Ds models.
+[334/600][245]
+                         Loss_D: 2.54 Loss_G: 38.30 Loss_KL: 9.57 Time: 398.41s
+                      
+[335/600][245]
+                         Loss_D: 2.72 Loss_G: 42.54 Loss_KL: 9.64 Time: 390.71s
+                      
+[336/600][245]
+                         Loss_D: 2.44 Loss_G: 55.56 Loss_KL: 9.80 Time: 390.15s
+                      
+[337/600][245]
+                         Loss_D: 2.47 Loss_G: 35.32 Loss_KL: 9.74 Time: 390.59s
+                      
+Save G/Ds models.
+[338/600][245]
+                         Loss_D: 2.44 Loss_G: 55.31 Loss_KL: 10.17 Time: 398.15s
+                      
+[339/600][245]
+                         Loss_D: 2.18 Loss_G: 50.40 Loss_KL: 9.57 Time: 391.16s
+                      
+[340/600][245]
+                         Loss_D: 1.92 Loss_G: 43.40 Loss_KL: 9.66 Time: 390.93s
+                      
+[341/600][245]
+                         Loss_D: 2.35 Loss_G: 47.50 Loss_KL: 9.99 Time: 391.23s
+                      
+Save G/Ds models.
+[342/600][245]
+                         Loss_D: 1.93 Loss_G: 46.34 Loss_KL: 8.92 Time: 399.36s
+                      
+[343/600][245]
+                         Loss_D: 0.90 Loss_G: 40.81 Loss_KL: 9.41 Time: 391.14s
+                      
+[344/600][245]
+                         Loss_D: 3.18 Loss_G: 50.41 Loss_KL: 9.55 Time: 390.81s
+                      
+[345/600][245]
+                         Loss_D: 1.24 Loss_G: 46.74 Loss_KL: 9.90 Time: 390.69s
+                      
+Save G/Ds models.
+[346/600][245]
+                         Loss_D: 3.62 Loss_G: 47.50 Loss_KL: 9.58 Time: 399.28s
+                      
+[347/600][245]
+                         Loss_D: 1.85 Loss_G: 53.27 Loss_KL: 9.97 Time: 390.78s
+                      
+[348/600][245]
+                         Loss_D: 1.17 Loss_G: 59.76 Loss_KL: 9.61 Time: 390.82s
+                      
+[349/600][245]
+                         Loss_D: 1.87 Loss_G: 63.20 Loss_KL: 10.56 Time: 390.45s
+                      
+[350/600][245]
+                         Loss_D: 2.74 Loss_G: 35.45 Loss_KL: 9.86 Time: 390.66s
+                      
+Save G/Ds models.
+[351/600][245]
+                         Loss_D: 1.87 Loss_G: 37.79 Loss_KL: 9.42 Time: 398.74s
+                      
+[352/600][245]
+                         Loss_D: 0.89 Loss_G: 57.14 Loss_KL: 9.57 Time: 390.47s
+                      
+[353/600][245]
+                         Loss_D: 0.89 Loss_G: 54.71 Loss_KL: 10.54 Time: 390.75s
+                      
+[354/600][245]
+                         Loss_D: 2.00 Loss_G: 54.64 Loss_KL: 9.60 Time: 391.38s
+                      
+Save G/Ds models.
+[355/600][245]
+                         Loss_D: 2.18 Loss_G: 61.66 Loss_KL: 9.77 Time: 398.19s
+                      
+[356/600][245]
+                         Loss_D: 2.56 Loss_G: 63.39 Loss_KL: 10.08 Time: 391.57s
+                      
+[357/600][245]
+                         Loss_D: 0.44 Loss_G: 50.69 Loss_KL: 10.19 Time: 391.03s
+                      
+[358/600][245]
+                         Loss_D: 1.03 Loss_G: 56.66 Loss_KL: 10.27 Time: 390.87s
+                      
+Save G/Ds models.
+[359/600][245]
+                         Loss_D: 1.66 Loss_G: 41.73 Loss_KL: 10.74 Time: 398.42s
+                      
+[360/600][245]
+                         Loss_D: 1.43 Loss_G: 45.29 Loss_KL: 9.69 Time: 390.96s
+                      
+[361/600][245]
+                         Loss_D: 3.56 Loss_G: 54.36 Loss_KL: 9.93 Time: 390.00s
+                      
+[362/600][245]
+                         Loss_D: 3.54 Loss_G: 36.32 Loss_KL: 10.43 Time: 388.97s
+                      
+Save G/Ds models.
+[363/600][245]
+                         Loss_D: 2.50 Loss_G: 48.77 Loss_KL: 9.58 Time: 398.31s
+                      
+[364/600][245]
+                         Loss_D: 2.67 Loss_G: 42.36 Loss_KL: 10.14 Time: 389.78s
+                      
+[365/600][245]
+                         Loss_D: 2.61 Loss_G: 51.24 Loss_KL: 10.07 Time: 390.07s
+                      
+[366/600][245]
+                         Loss_D: 2.06 Loss_G: 45.92 Loss_KL: 9.86 Time: 391.28s
+                      
+Save G/Ds models.
+[367/600][245]
+                         Loss_D: 1.27 Loss_G: 39.81 Loss_KL: 10.08 Time: 398.53s
+                      
+[368/600][245]
+                         Loss_D: 1.07 Loss_G: 42.75 Loss_KL: 10.26 Time: 390.35s
+                      
+[369/600][245]
+                         Loss_D: 2.55 Loss_G: 38.33 Loss_KL: 10.31 Time: 390.54s
+                      
+[370/600][245]
+                         Loss_D: 1.44 Loss_G: 59.58 Loss_KL: 11.30 Time: 390.50s
+                      
+Save G/Ds models.
+[371/600][245]
+                         Loss_D: 1.88 Loss_G: 45.43 Loss_KL: 9.97 Time: 398.47s
+                      
+[372/600][245]
+                         Loss_D: 3.47 Loss_G: 40.21 Loss_KL: 10.39 Time: 388.32s
+                      
+[373/600][245]
+                         Loss_D: 1.79 Loss_G: 49.11 Loss_KL: 10.11 Time: 390.90s
+                      
+[374/600][245]
+                         Loss_D: 2.86 Loss_G: 36.29 Loss_KL: 10.44 Time: 389.01s
+                      
+Save G/Ds models.
+[375/600][245]
+                         Loss_D: 3.00 Loss_G: 51.80 Loss_KL: 10.37 Time: 395.45s
+                      
+[376/600][245]
+                         Loss_D: 0.96 Loss_G: 55.91 Loss_KL: 9.75 Time: 388.07s
+                      
+[377/600][245]
+                         Loss_D: 1.01 Loss_G: 48.17 Loss_KL: 10.13 Time: 389.52s
+                      
+[378/600][245]
+                         Loss_D: 0.37 Loss_G: 50.66 Loss_KL: 11.29 Time: 390.60s
+                      
+Save G/Ds models.
+[379/600][245]
+                         Loss_D: 2.95 Loss_G: 34.89 Loss_KL: 11.21 Time: 398.54s
+                      
+[380/600][245]
+                         Loss_D: 1.89 Loss_G: 52.06 Loss_KL: 10.22 Time: 389.79s
+                      
+[381/600][245]
+                         Loss_D: 1.26 Loss_G: 51.36 Loss_KL: 10.59 Time: 390.90s
+                      
+[382/600][245]
+                         Loss_D: 2.79 Loss_G: 44.95 Loss_KL: 10.28 Time: 390.55s
+                      
+Save G/Ds models.
+[383/600][245]
+                         Loss_D: 0.63 Loss_G: 46.46 Loss_KL: 10.46 Time: 399.35s
+                      
+[384/600][245]
+                         Loss_D: 2.02 Loss_G: 46.06 Loss_KL: 10.32 Time: 391.08s
+                      
+[385/600][245]
+                         Loss_D: 1.28 Loss_G: 44.23 Loss_KL: 10.74 Time: 390.64s
+                      
+[386/600][245]
+                         Loss_D: 2.12 Loss_G: 45.29 Loss_KL: 10.98 Time: 389.16s
+                      
+Save G/Ds models.
+[387/600][245]
+                         Loss_D: 1.45 Loss_G: 46.67 Loss_KL: 10.82 Time: 397.96s
+                      
+[388/600][245]
+                         Loss_D: 3.46 Loss_G: 44.52 Loss_KL: 10.74 Time: 388.17s
+                      
+[389/600][245]
+                         Loss_D: 9.40 Loss_G: 34.38 Loss_KL: 10.86 Time: 388.56s
+                      
+[390/600][245]
+                         Loss_D: 0.86 Loss_G: 45.78 Loss_KL: 10.96 Time: 388.77s
+                      
+Save G/Ds models.
+[391/600][245]
+                         Loss_D: 1.69 Loss_G: 52.56 Loss_KL: 10.75 Time: 399.12s
+                      
+[392/600][245]
+                         Loss_D: 0.95 Loss_G: 47.11 Loss_KL: 10.50 Time: 390.01s
+                      
+[393/600][245]
+                         Loss_D: 1.92 Loss_G: 38.97 Loss_KL: 10.98 Time: 390.41s
+                      
+[394/600][245]
+                         Loss_D: 1.16 Loss_G: 44.51 Loss_KL: 11.51 Time: 390.27s
+                      
+Save G/Ds models.
+[395/600][245]
+                         Loss_D: 5.49 Loss_G: 58.08 Loss_KL: 10.44 Time: 398.58s
+                      
+[396/600][245]
+                         Loss_D: 3.93 Loss_G: 42.81 Loss_KL: 11.16 Time: 390.38s
+                      
+[397/600][245]
+                         Loss_D: 3.35 Loss_G: 53.18 Loss_KL: 10.99 Time: 389.53s
+                      
+[398/600][245]
+                         Loss_D: 1.05 Loss_G: 41.34 Loss_KL: 11.31 Time: 390.65s
+                      
+Save G/Ds models.
+[399/600][245]
+                         Loss_D: 0.78 Loss_G: 56.23 Loss_KL: 10.75 Time: 399.55s
+                      
+[400/600][245]
+                         Loss_D: 1.65 Loss_G: 41.58 Loss_KL: 10.94 Time: 387.85s
+                      
+[401/600][245]
+                         Loss_D: 1.36 Loss_G: 42.94 Loss_KL: 10.98 Time: 390.21s
+                      
+[402/600][245]
+                         Loss_D: 0.37 Loss_G: 53.02 Loss_KL: 10.01 Time: 390.60s
+                      
+[403/600][245]
+                         Loss_D: 1.26 Loss_G: 43.94 Loss_KL: 11.26 Time: 389.37s
+                      
+Save G/Ds models.
+[404/600][245]
+                         Loss_D: 3.04 Loss_G: 59.82 Loss_KL: 10.98 Time: 398.62s
+                      
+[405/600][245]
+                         Loss_D: 1.82 Loss_G: 44.88 Loss_KL: 11.08 Time: 389.47s
+                      
+[406/600][245]
+                         Loss_D: 1.59 Loss_G: 44.05 Loss_KL: 10.06 Time: 390.09s
+                      
+[407/600][245]
+                         Loss_D: 2.28 Loss_G: 47.04 Loss_KL: 10.34 Time: 390.70s
+                      
+Save G/Ds models.
+[408/600][245]
+                         Loss_D: 1.33 Loss_G: 35.53 Loss_KL: 10.58 Time: 398.77s
+                      
+[409/600][245]
+                         Loss_D: 4.30 Loss_G: 48.97 Loss_KL: 10.63 Time: 390.97s
+                      
+[410/600][245]
+                         Loss_D: 2.60 Loss_G: 65.70 Loss_KL: 11.30 Time: 391.04s
+                      
+[411/600][245]
+                         Loss_D: 0.96 Loss_G: 58.04 Loss_KL: 11.49 Time: 390.31s
+                      
+Save G/Ds models.
+[412/600][245]
+                         Loss_D: 1.25 Loss_G: 46.72 Loss_KL: 10.82 Time: 399.74s
+                      
+[413/600][245]
+                         Loss_D: 2.46 Loss_G: 63.24 Loss_KL: 10.45 Time: 388.94s
+                      
+[414/600][245]
+                         Loss_D: 0.87 Loss_G: 53.51 Loss_KL: 10.93 Time: 389.91s
+                      
+[415/600][245]
+                         Loss_D: 1.37 Loss_G: 53.71 Loss_KL: 11.21 Time: 389.88s
+                      
+Save G/Ds models.
+[416/600][245]
+                         Loss_D: 1.26 Loss_G: 58.17 Loss_KL: 10.24 Time: 396.00s
+                      
+[417/600][245]
+                         Loss_D: 1.49 Loss_G: 55.31 Loss_KL: 11.33 Time: 389.36s
+                      
+[418/600][245]
+                         Loss_D: 1.78 Loss_G: 42.98 Loss_KL: 11.06 Time: 390.26s
+                      
+[419/600][245]
+                         Loss_D: 1.07 Loss_G: 57.65 Loss_KL: 11.48 Time: 389.42s
+                      
+Save G/Ds models.
+[420/600][245]
+                         Loss_D: 2.63 Loss_G: 50.34 Loss_KL: 11.08 Time: 397.22s
+                      
+[421/600][245]
+                         Loss_D: 1.83 Loss_G: 50.38 Loss_KL: 10.53 Time: 390.19s
+                      
+[422/600][245]
+                         Loss_D: 1.25 Loss_G: 46.22 Loss_KL: 11.19 Time: 389.94s
+                      
+[423/600][245]
+                         Loss_D: 0.90 Loss_G: 51.44 Loss_KL: 11.27 Time: 389.36s
+                      
+Save G/Ds models.
+[424/600][245]
+                         Loss_D: 2.45 Loss_G: 53.18 Loss_KL: 11.86 Time: 398.72s
+                      
+[425/600][245]
+                         Loss_D: 1.04 Loss_G: 44.85 Loss_KL: 11.68 Time: 388.53s
+                      
+[426/600][245]
+                         Loss_D: 0.72 Loss_G: 63.82 Loss_KL: 11.17 Time: 389.59s
+                      
+[427/600][245]
+                         Loss_D: 1.92 Loss_G: 42.94 Loss_KL: 11.46 Time: 389.78s
+                      
+Save G/Ds models.
+[428/600][245]
+                         Loss_D: 1.76 Loss_G: 52.25 Loss_KL: 10.76 Time: 398.06s
+                      
+[429/600][245]
+                         Loss_D: 1.47 Loss_G: 48.05 Loss_KL: 11.02 Time: 388.94s
+                      
+[430/600][245]
+                         Loss_D: 2.41 Loss_G: 59.61 Loss_KL: 11.80 Time: 390.94s
+                      
+[431/600][245]
+                         Loss_D: 1.29 Loss_G: 46.31 Loss_KL: 11.48 Time: 391.01s
+                      
+Save G/Ds models.
+[432/600][245]
+                         Loss_D: 1.18 Loss_G: 42.85 Loss_KL: 10.98 Time: 396.71s
+                      
+[433/600][245]
+                         Loss_D: 2.13 Loss_G: 49.31 Loss_KL: 11.25 Time: 389.13s
+                      
+[434/600][245]
+                         Loss_D: 1.18 Loss_G: 49.92 Loss_KL: 11.45 Time: 389.39s
+                      
+[435/600][245]
+                         Loss_D: 2.04 Loss_G: 39.90 Loss_KL: 11.40 Time: 389.97s
+                      
+Save G/Ds models.
+[436/600][245]
+                         Loss_D: 5.60 Loss_G: 31.13 Loss_KL: 11.43 Time: 399.30s
+                      
+[437/600][245]
+                         Loss_D: 0.97 Loss_G: 48.49 Loss_KL: 11.46 Time: 388.10s
+                      
+[438/600][245]
+                         Loss_D: 2.98 Loss_G: 45.60 Loss_KL: 11.58 Time: 390.32s
+                      
+[439/600][245]
+                         Loss_D: 3.64 Loss_G: 50.19 Loss_KL: 12.50 Time: 389.99s
+                      
+Save G/Ds models.
+[440/600][245]
+                         Loss_D: 4.48 Loss_G: 47.49 Loss_KL: 11.66 Time: 399.42s
+                      
+[441/600][245]
+                         Loss_D: 1.65 Loss_G: 57.29 Loss_KL: 12.08 Time: 389.41s
+                      
+[442/600][245]
+                         Loss_D: 0.44 Loss_G: 49.01 Loss_KL: 11.17 Time: 390.97s
+                      
+[443/600][245]
+                         Loss_D: 1.41 Loss_G: 47.47 Loss_KL: 12.07 Time: 390.48s
+                      
+Save G/Ds models.
+[444/600][245]
+                         Loss_D: 1.78 Loss_G: 44.86 Loss_KL: 11.83 Time: 399.06s
+                      
+[445/600][245]
+                         Loss_D: 2.72 Loss_G: 53.35 Loss_KL: 11.43 Time: 390.90s
+                      
+[446/600][245]
+                         Loss_D: 2.69 Loss_G: 55.01 Loss_KL: 11.92 Time: 390.37s
+                      
+[447/600][245]
+                         Loss_D: 4.10 Loss_G: 62.79 Loss_KL: 12.39 Time: 390.83s
+                      
+Save G/Ds models.
+[448/600][245]
+                         Loss_D: 19.75 Loss_G: 31.87 Loss_KL: 12.04 Time: 399.20s
+                      
+[449/600][245]
+                         Loss_D: 1.00 Loss_G: 48.17 Loss_KL: 11.91 Time: 390.71s
+                      
+[450/600][245]
+                         Loss_D: 2.06 Loss_G: 56.03 Loss_KL: 11.79 Time: 389.94s
+                      
+[451/600][245]
+                         Loss_D: 0.62 Loss_G: 56.07 Loss_KL: 12.29 Time: 390.59s
+                      
+[452/600][245]
+                         Loss_D: 1.78 Loss_G: 54.19 Loss_KL: 12.63 Time: 388.63s
+                      
+Save G/Ds models.
+[453/600][245]
+                         Loss_D: 3.98 Loss_G: 65.15 Loss_KL: 11.96 Time: 398.93s
+                      
+[454/600][245]
+                         Loss_D: 3.35 Loss_G: 48.14 Loss_KL: 11.57 Time: 390.61s
+                      
+[455/600][245]
+                         Loss_D: 0.69 Loss_G: 56.87 Loss_KL: 11.69 Time: 389.64s
+                      
+[456/600][245]
+                         Loss_D: 3.36 Loss_G: 73.23 Loss_KL: 12.59 Time: 389.71s
+                      
+Save G/Ds models.
+[457/600][245]
+                         Loss_D: 1.41 Loss_G: 53.91 Loss_KL: 12.01 Time: 397.25s
+                      
+[458/600][245]
+                         Loss_D: 0.95 Loss_G: 52.76 Loss_KL: 11.65 Time: 390.22s
+                      
+[459/600][245]
+                         Loss_D: 2.68 Loss_G: 46.37 Loss_KL: 12.33 Time: 389.86s
+                      
+[460/600][245]
+                         Loss_D: 1.42 Loss_G: 46.71 Loss_KL: 12.11 Time: 390.68s
+                      
+Save G/Ds models.
+[461/600][245]
+                         Loss_D: 1.32 Loss_G: 47.45 Loss_KL: 11.86 Time: 397.21s
+                      
+[462/600][245]
+                         Loss_D: 2.77 Loss_G: 52.62 Loss_KL: 11.97 Time: 390.62s
+                      
+[463/600][245]
+                         Loss_D: 1.49 Loss_G: 50.94 Loss_KL: 11.78 Time: 389.77s
+                      
+[464/600][245]
+                         Loss_D: 1.07 Loss_G: 59.54 Loss_KL: 11.82 Time: 391.05s
+                      
+Save G/Ds models.
+[465/600][245]
+                         Loss_D: 5.43 Loss_G: 53.47 Loss_KL: 12.19 Time: 399.44s
+                      
+[466/600][245]
+                         Loss_D: 4.03 Loss_G: 51.89 Loss_KL: 12.38 Time: 390.01s
+                      
+[467/600][245]
+                         Loss_D: 0.82 Loss_G: 52.98 Loss_KL: 12.64 Time: 390.36s
+                      
+[468/600][245]
+                         Loss_D: 1.70 Loss_G: 43.50 Loss_KL: 12.27 Time: 390.60s
+                      
+Save G/Ds models.
+[469/600][245]
+                         Loss_D: 1.18 Loss_G: 58.15 Loss_KL: 12.40 Time: 398.55s
+                      
+[470/600][245]
+                         Loss_D: 1.25 Loss_G: 59.67 Loss_KL: 12.20 Time: 391.02s
+                      
+[471/600][245]
+                         Loss_D: 1.71 Loss_G: 68.98 Loss_KL: 12.25 Time: 388.55s
+                      
+[472/600][245]
+                         Loss_D: 0.61 Loss_G: 53.01 Loss_KL: 11.65 Time: 389.53s
+                      
+Save G/Ds models.
+[473/600][245]
+                         Loss_D: 2.73 Loss_G: 48.06 Loss_KL: 12.22 Time: 397.23s
+                      
+[474/600][245]
+                         Loss_D: 4.05 Loss_G: 66.63 Loss_KL: 12.57 Time: 388.77s
+                      
+[475/600][245]
+                         Loss_D: 1.15 Loss_G: 58.86 Loss_KL: 12.01 Time: 390.35s
+                      
+[476/600][245]
+                         Loss_D: 1.46 Loss_G: 58.21 Loss_KL: 11.72 Time: 388.43s
+                      
+Save G/Ds models.
+[477/600][245]
+                         Loss_D: 2.21 Loss_G: 59.36 Loss_KL: 12.12 Time: 397.27s
+                      
+[478/600][245]
+                         Loss_D: 3.82 Loss_G: 59.27 Loss_KL: 11.72 Time: 388.89s
+                      
+[479/600][245]
+                         Loss_D: 1.47 Loss_G: 56.82 Loss_KL: 12.92 Time: 390.32s
+                      
+[480/600][245]
+                         Loss_D: 2.54 Loss_G: 54.96 Loss_KL: 12.47 Time: 389.35s
+                      
+Save G/Ds models.
+[481/600][245]
+                         Loss_D: 2.55 Loss_G: 54.95 Loss_KL: 11.82 Time: 397.61s
+                      
+[482/600][245]
+                         Loss_D: 1.81 Loss_G: 55.84 Loss_KL: 12.35 Time: 390.53s
+                      
+[483/600][245]
+                         Loss_D: 1.38 Loss_G: 44.63 Loss_KL: 11.96 Time: 390.43s
+                      
+[484/600][245]
+                         Loss_D: 2.02 Loss_G: 53.23 Loss_KL: 12.90 Time: 390.35s
+                      
+Save G/Ds models.
+[485/600][245]
+                         Loss_D: 4.80 Loss_G: 58.91 Loss_KL: 12.00 Time: 398.84s
+                      
+[486/600][245]
+                         Loss_D: 1.24 Loss_G: 64.67 Loss_KL: 12.39 Time: 390.88s
+                      
+[487/600][245]
+                         Loss_D: 1.18 Loss_G: 57.21 Loss_KL: 11.79 Time: 389.86s
+                      
+[488/600][245]
+                         Loss_D: 0.96 Loss_G: 61.06 Loss_KL: 12.37 Time: 390.08s
+                      
+Save G/Ds models.
+[489/600][245]
+                         Loss_D: 2.62 Loss_G: 55.81 Loss_KL: 12.13 Time: 399.73s
+                      
+[490/600][245]
+                         Loss_D: 3.28 Loss_G: 40.51 Loss_KL: 12.27 Time: 390.65s
+                      
+[491/600][245]
+                         Loss_D: 2.22 Loss_G: 59.05 Loss_KL: 12.21 Time: 390.57s
+                      
+[492/600][245]
+                         Loss_D: 0.50 Loss_G: 47.77 Loss_KL: 12.20 Time: 390.28s
+                      
+Save G/Ds models.
+[493/600][245]
+                         Loss_D: 2.11 Loss_G: 62.57 Loss_KL: 12.33 Time: 399.24s
+                      
+[494/600][245]
+                         Loss_D: 2.66 Loss_G: 61.86 Loss_KL: 12.29 Time: 388.73s
+                      
+[495/600][245]
+                         Loss_D: 1.17 Loss_G: 54.52 Loss_KL: 12.09 Time: 390.80s
+                      
+[496/600][245]
+                         Loss_D: 1.27 Loss_G: 43.28 Loss_KL: 12.62 Time: 391.06s
+                      
+Save G/Ds models.
+[497/600][245]
+                         Loss_D: 6.77 Loss_G: 43.76 Loss_KL: 12.71 Time: 398.74s
+                      
+[498/600][245]
+                         Loss_D: 1.50 Loss_G: 57.56 Loss_KL: 13.15 Time: 390.77s
+                      
+[499/600][245]
+                         Loss_D: 1.81 Loss_G: 59.49 Loss_KL: 12.74 Time: 391.07s
+                      
+[500/600][245]
+                         Loss_D: 1.83 Loss_G: 66.73 Loss_KL: 12.11 Time: 390.60s
+                      
+[501/600][245]
+                         Loss_D: 3.01 Loss_G: 58.18 Loss_KL: 12.93 Time: 391.06s
+                      
+Save G/Ds models.
+[502/600][245]
+                         Loss_D: 2.58 Loss_G: 56.32 Loss_KL: 12.21 Time: 399.12s
+                      
+[503/600][245]
+                         Loss_D: 1.82 Loss_G: 71.58 Loss_KL: 12.42 Time: 391.43s
+                      
+[504/600][245]
+                         Loss_D: 0.59 Loss_G: 63.69 Loss_KL: 13.05 Time: 391.20s
+                      
+[505/600][245]
+                         Loss_D: 2.15 Loss_G: 60.87 Loss_KL: 12.66 Time: 391.48s
+                      
+Save G/Ds models.
+[506/600][245]
+                         Loss_D: 2.32 Loss_G: 59.24 Loss_KL: 12.44 Time: 396.82s
+                      
+[507/600][245]
+                         Loss_D: 2.78 Loss_G: 69.26 Loss_KL: 13.30 Time: 390.39s
+                      
+[508/600][245]
+                         Loss_D: 0.63 Loss_G: 54.68 Loss_KL: 12.56 Time: 390.57s
+                      
+[509/600][245]
+                         Loss_D: 1.27 Loss_G: 54.65 Loss_KL: 12.66 Time: 391.71s
+                      
+Save G/Ds models.
+[510/600][245]
+                         Loss_D: 1.08 Loss_G: 46.12 Loss_KL: 12.73 Time: 398.68s
+                      
+[511/600][245]
+                         Loss_D: 1.81 Loss_G: 58.51 Loss_KL: 12.75 Time: 390.42s
+                      
+[512/600][245]
+                         Loss_D: 1.87 Loss_G: 52.20 Loss_KL: 12.91 Time: 390.87s
+                      
+[513/600][245]
+                         Loss_D: 2.12 Loss_G: 67.91 Loss_KL: 13.74 Time: 390.63s
+                      
+Save G/Ds models.
+[514/600][245]
+                         Loss_D: 1.71 Loss_G: 51.76 Loss_KL: 13.46 Time: 398.62s
+                      
+[515/600][245]
+                         Loss_D: 1.83 Loss_G: 63.96 Loss_KL: 12.69 Time: 390.70s
+                      
+[516/600][245]
+                         Loss_D: 2.17 Loss_G: 52.71 Loss_KL: 12.68 Time: 390.50s
+                      
+[517/600][245]
+                         Loss_D: 0.48 Loss_G: 58.84 Loss_KL: 12.90 Time: 388.81s
+                      
+Save G/Ds models.
+[518/600][245]
+                         Loss_D: 0.81 Loss_G: 59.08 Loss_KL: 13.14 Time: 398.77s
+                      
+[519/600][245]
+                         Loss_D: 2.52 Loss_G: 50.44 Loss_KL: 12.54 Time: 390.34s
+                      
+[520/600][245]
+                         Loss_D: 1.22 Loss_G: 55.17 Loss_KL: 13.19 Time: 389.64s
+                      
+[521/600][245]
+                         Loss_D: 2.11 Loss_G: 56.23 Loss_KL: 13.52 Time: 390.70s
+                      
+Save G/Ds models.
+[522/600][245]
+                         Loss_D: 0.62 Loss_G: 61.11 Loss_KL: 12.30 Time: 398.83s
+                      
+[523/600][245]
+                         Loss_D: 0.96 Loss_G: 60.24 Loss_KL: 12.90 Time: 389.97s
+                      
+[524/600][245]
+                         Loss_D: 2.71 Loss_G: 42.65 Loss_KL: 13.72 Time: 389.63s
+                      
+[525/600][245]
+                         Loss_D: 0.89 Loss_G: 57.20 Loss_KL: 13.65 Time: 389.07s
+                      
+Save G/Ds models.
+[526/600][245]
+                         Loss_D: 1.96 Loss_G: 53.45 Loss_KL: 13.01 Time: 397.81s
+                      
+[527/600][245]
+                         Loss_D: 1.31 Loss_G: 57.97 Loss_KL: 13.82 Time: 390.98s
+                      
+[528/600][245]
+                         Loss_D: 1.26 Loss_G: 55.30 Loss_KL: 12.77 Time: 388.88s
+                      
+[529/600][245]
+                         Loss_D: 2.35 Loss_G: 61.86 Loss_KL: 13.12 Time: 390.24s
+                      
+Save G/Ds models.
+[530/600][245]
+                         Loss_D: 1.13 Loss_G: 46.80 Loss_KL: 14.04 Time: 397.69s
+                      
+[531/600][245]
+                         Loss_D: 2.62 Loss_G: 70.57 Loss_KL: 12.89 Time: 390.18s
+                      
+[532/600][245]
+                         Loss_D: 0.74 Loss_G: 49.53 Loss_KL: 12.94 Time: 391.08s
+                      
+[533/600][245]
+                         Loss_D: 0.86 Loss_G: 57.34 Loss_KL: 13.00 Time: 390.47s
+                      
+Save G/Ds models.
+[534/600][245]
+                         Loss_D: 2.65 Loss_G: 44.63 Loss_KL: 12.41 Time: 398.44s
+                      
+[535/600][245]
+                         Loss_D: 3.69 Loss_G: 58.55 Loss_KL: 12.87 Time: 391.42s
+                      
+[536/600][245]
+                         Loss_D: 1.19 Loss_G: 54.12 Loss_KL: 13.02 Time: 389.91s
+                      
+[537/600][245]
+                         Loss_D: 1.46 Loss_G: 56.12 Loss_KL: 13.66 Time: 390.93s
+                      
+Save G/Ds models.
+[538/600][245]
+                         Loss_D: 2.23 Loss_G: 47.48 Loss_KL: 13.23 Time: 397.59s
+                      
+[539/600][245]
+                         Loss_D: 1.98 Loss_G: 71.10 Loss_KL: 12.91 Time: 390.60s
+                      
+[540/600][245]
+                         Loss_D: 0.86 Loss_G: 59.79 Loss_KL: 13.74 Time: 389.42s
+                      
+[541/600][245]
+                         Loss_D: 2.33 Loss_G: 54.60 Loss_KL: 12.99 Time: 390.21s
+                      
+Save G/Ds models.
+[542/600][245]
+                         Loss_D: 3.36 Loss_G: 60.93 Loss_KL: 14.51 Time: 398.66s
+                      
+[543/600][245]
+                         Loss_D: 1.48 Loss_G: 58.83 Loss_KL: 13.50 Time: 391.00s
+                      
+[544/600][245]
+                         Loss_D: 1.82 Loss_G: 69.32 Loss_KL: 13.52 Time: 390.74s
+                      
+[545/600][245]
+                         Loss_D: 0.95 Loss_G: 56.09 Loss_KL: 13.36 Time: 390.67s
+                      
+Save G/Ds models.
+[546/600][245]
+                         Loss_D: 2.64 Loss_G: 56.90 Loss_KL: 13.59 Time: 399.66s
+                      
+[547/600][245]
+                         Loss_D: 1.05 Loss_G: 55.81 Loss_KL: 13.06 Time: 391.16s
+                      
+[548/600][245]
+                         Loss_D: 2.64 Loss_G: 54.04 Loss_KL: 12.98 Time: 390.48s
+                      
+[549/600][245]
+                         Loss_D: 1.04 Loss_G: 60.01 Loss_KL: 13.77 Time: 390.45s
+                      
+[550/600][245]
+                         Loss_D: 3.49 Loss_G: 73.05 Loss_KL: 12.74 Time: 390.99s
+                      
+Save G/Ds models.
+[551/600][245]
+                         Loss_D: 1.72 Loss_G: 54.73 Loss_KL: 13.40 Time: 399.20s
+                      
+[552/600][245]
+                         Loss_D: 2.24 Loss_G: 43.71 Loss_KL: 13.67 Time: 390.18s
+                      
+[553/600][245]
+                         Loss_D: 0.81 Loss_G: 58.96 Loss_KL: 13.10 Time: 390.85s
+                      
+[554/600][245]
+                         Loss_D: 0.80 Loss_G: 60.57 Loss_KL: 13.25 Time: 389.99s
+                      
+Save G/Ds models.
+[555/600][245]
+                         Loss_D: 3.35 Loss_G: 64.19 Loss_KL: 13.00 Time: 397.38s
+                      
+[556/600][245]
+                         Loss_D: 1.11 Loss_G: 51.01 Loss_KL: 14.10 Time: 390.68s
+                      
+[557/600][245]
+                         Loss_D: 0.93 Loss_G: 53.09 Loss_KL: 13.64 Time: 390.62s
+                      
+[558/600][245]
+                         Loss_D: 0.77 Loss_G: 62.53 Loss_KL: 13.84 Time: 389.02s
+                      
+Save G/Ds models.
+[559/600][245]
+                         Loss_D: 4.98 Loss_G: 69.86 Loss_KL: 13.55 Time: 398.23s
+                      
+[560/600][245]
+                         Loss_D: 0.47 Loss_G: 51.19 Loss_KL: 13.01 Time: 389.79s
+                      
+[561/600][245]
+                         Loss_D: 0.61 Loss_G: 62.17 Loss_KL: 14.13 Time: 390.65s
+                      
+[562/600][245]
+                         Loss_D: 1.18 Loss_G: 88.41 Loss_KL: 14.37 Time: 390.50s
+                      
+Save G/Ds models.
+[563/600][245]
+                         Loss_D: 4.05 Loss_G: 53.02 Loss_KL: 13.94 Time: 397.68s
+                      
+[564/600][245]
+                         Loss_D: 1.38 Loss_G: 54.62 Loss_KL: 13.86 Time: 390.81s
+                      
+[565/600][245]
+                         Loss_D: 0.63 Loss_G: 63.74 Loss_KL: 13.57 Time: 390.07s
+                      
+[566/600][245]
+                         Loss_D: 1.56 Loss_G: 67.67 Loss_KL: 14.03 Time: 389.47s
+                      
+Save G/Ds models.
+[567/600][245]
+                         Loss_D: 0.67 Loss_G: 54.31 Loss_KL: 13.70 Time: 397.96s
+                      
+[568/600][245]
+                         Loss_D: 1.77 Loss_G: 63.89 Loss_KL: 14.13 Time: 390.54s
+                      
+[569/600][245]
+                         Loss_D: 1.35 Loss_G: 57.43 Loss_KL: 13.93 Time: 390.85s
+                      
+[570/600][245]
+                         Loss_D: 1.54 Loss_G: 53.16 Loss_KL: 13.50 Time: 390.90s
+                      
+Save G/Ds models.
+[571/600][245]
+                         Loss_D: 2.42 Loss_G: 46.33 Loss_KL: 13.96 Time: 397.63s
+                      
+[572/600][245]
+                         Loss_D: 1.77 Loss_G: 46.35 Loss_KL: 12.48 Time: 390.66s
+                      
+[573/600][245]
+                         Loss_D: 1.80 Loss_G: 53.14 Loss_KL: 13.62 Time: 390.51s
+                      
+[574/600][245]
+                         Loss_D: 2.91 Loss_G: 61.45 Loss_KL: 14.27 Time: 390.94s
+                      
+Save G/Ds models.
+[575/600][245]
+                         Loss_D: 1.19 Loss_G: 51.11 Loss_KL: 12.97 Time: 399.33s
+                      
+[576/600][245]
+                         Loss_D: 1.31 Loss_G: 54.93 Loss_KL: 13.16 Time: 391.24s
+                      
+[577/600][245]
+                         Loss_D: 1.90 Loss_G: 61.32 Loss_KL: 13.67 Time: 390.63s
+                      
+[578/600][245]
+                         Loss_D: 0.97 Loss_G: 62.46 Loss_KL: 14.25 Time: 388.70s
+                      
+Save G/Ds models.
+[579/600][245]
+                         Loss_D: 1.80 Loss_G: 49.93 Loss_KL: 14.24 Time: 395.50s
+                      
+[580/600][245]
+                         Loss_D: 1.19 Loss_G: 67.57 Loss_KL: 13.78 Time: 391.09s
+                      
+[581/600][245]
+                         Loss_D: 0.77 Loss_G: 51.09 Loss_KL: 14.08 Time: 391.01s
+                      
+[582/600][245]
+                         Loss_D: 0.67 Loss_G: 54.27 Loss_KL: 14.60 Time: 391.32s
+                      
+Save G/Ds models.
+[583/600][245]
+                         Loss_D: 1.01 Loss_G: 54.44 Loss_KL: 14.09 Time: 398.62s
+                      
+[584/600][245]
+                         Loss_D: 1.00 Loss_G: 53.02 Loss_KL: 14.04 Time: 391.03s
+                      
+[585/600][245]
+                         Loss_D: 1.23 Loss_G: 55.93 Loss_KL: 13.72 Time: 391.28s
+                      
+[586/600][245]
+                         Loss_D: 1.14 Loss_G: 58.05 Loss_KL: 14.29 Time: 390.11s
+                      
+Save G/Ds models.
+[587/600][245]
+                         Loss_D: 1.95 Loss_G: 53.42 Loss_KL: 14.06 Time: 397.97s
+                      
+[588/600][245]
+                         Loss_D: 0.75 Loss_G: 51.97 Loss_KL: 14.24 Time: 391.18s
+                      
+[589/600][245]
+                         Loss_D: 0.64 Loss_G: 51.04 Loss_KL: 14.65 Time: 391.35s
+                      
+[590/600][245]
+                         Loss_D: 0.48 Loss_G: 64.46 Loss_KL: 13.96 Time: 390.90s
+                      
+Save G/Ds models.
+[591/600][245]
+                         Loss_D: 1.97 Loss_G: 46.54 Loss_KL: 14.50 Time: 400.35s
+                      
+[592/600][245]
+                         Loss_D: 3.83 Loss_G: 50.35 Loss_KL: 13.91 Time: 390.77s
+                      
+[593/600][245]
+                         Loss_D: 0.74 Loss_G: 58.18 Loss_KL: 14.12 Time: 389.75s
+                      
+[594/600][245]
+                         Loss_D: 1.90 Loss_G: 64.96 Loss_KL: 14.72 Time: 390.47s
+                      
+Save G/Ds models.
+[595/600][245]
+                         Loss_D: 2.48 Loss_G: 49.55 Loss_KL: 13.86 Time: 399.32s
+                      
+[596/600][245]
+                         Loss_D: 2.78 Loss_G: 59.43 Loss_KL: 14.54 Time: 390.74s
+                      
+[597/600][245]
+                         Loss_D: 0.68 Loss_G: 64.39 Loss_KL: 14.11 Time: 390.97s
+                      
+[598/600][245]
+                         Loss_D: 0.98 Loss_G: 52.42 Loss_KL: 14.32 Time: 390.91s
+                      
+Save G/Ds models.
+[599/600][245]
+                         Loss_D: 0.60 Loss_G: 73.28 Loss_KL: 14.10 Time: 400.00s
+                      
+Save G/Ds models.
+Total time for training: 235040.9661269188
